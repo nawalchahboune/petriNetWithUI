@@ -3,7 +3,9 @@ package org.pneditor.petrinet.adapters.nawal;
 import org.pneditor.petrinet.AbstractArc;
 import org.pneditor.petrinet.AbstractNode;
 import org.pneditor.petrinet.ResetArcMultiplicityException;
+import org.pneditor.petrinet.models.nawal.src.Exceptions.NegativeWeight;
 import org.pneditor.petrinet.models.nawal.src.Metier.Arc;
+import org.pneditor.petrinet.models.nawal.src.Metier.ArcEntrant;
 
 public class ArcEAdapter extends AbstractArc {
 	
@@ -35,7 +37,7 @@ public class ArcEAdapter extends AbstractArc {
 	@Override
 	public boolean isRegular() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -46,18 +48,28 @@ public class ArcEAdapter extends AbstractArc {
 
 	@Override
 	public int getMultiplicity() throws ResetArcMultiplicityException {
-		// TODO Auto-generated method stub
-		return 0;
+		int Multiplicity =((ArcEntrant)arc).getPoids();
+		return Multiplicity;
 	}
 
 	@Override
 	public void setMultiplicity(int multiplicity) throws ResetArcMultiplicityException {
-		// TODO Auto-generated method stub
+		try {
+			((ArcEntrant)arc).setPoids(multiplicity);
+		} catch (NegativeWeight e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	public Arc getArc() {
 		return arc;
+	}
+
+	@Override
+	public boolean isSourceAPlace() {
+		return false;
 	}
 	
 

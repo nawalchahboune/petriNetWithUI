@@ -26,6 +26,11 @@ public class TransitionAdapter extends AbstractTransition {
 	public Transition getTransition() {
 		return transition;
 	}
+	public boolean isTirable() {
+		return this.transition.isTirable();
+	}
+	
+	
 
 	
 

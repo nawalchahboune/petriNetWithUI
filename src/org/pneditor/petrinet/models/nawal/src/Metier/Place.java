@@ -70,6 +70,7 @@ public class Place {
 		if(jetons>=0) {
 
 			this.jetons = jetons;
+			//System.out.println("tokens i want to out : "+ jetons);
 		}
 		else {
 			throw new NegativeToken();

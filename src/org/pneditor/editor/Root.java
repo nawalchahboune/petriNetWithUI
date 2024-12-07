@@ -171,7 +171,7 @@ public final class Root implements WindowListener, ListSelectionListener, Select
 		return this.graphicPetriNet.getPetriNet();
 	}
 
-	private String model = "nawal";
+	private String model = "imta";
 
 	public String getCurrentModel() {
 		return this.model;
@@ -397,7 +397,7 @@ public final class Root implements WindowListener, ListSelectionListener, Select
 		this.selectAllAction.setEnabled(true);
 		this.delete.setEnabled(isDeletable);
 		this.setArcMultiplicity.setEnabled(!isReset);
-		this.setArcInhibitory.setEnabled(isSourceAPlace);
+		this.setArcInhibitory.setEnabled(isSourceAPlace);//isSourceAPlace
 		this.setArcReset.setEnabled(isSourceAPlace);
 		this.setArcRegular.setEnabled(isArc);
 		this.setTokens.setEnabled(isPlace);

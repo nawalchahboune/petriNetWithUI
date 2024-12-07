@@ -26,9 +26,9 @@ public abstract class AbstractArc  {
 
 	public abstract AbstractNode getDestination();
 
-	public boolean isSourceAPlace() {
-		return getSource().isPlace();
-	}
+	public abstract boolean isSourceAPlace() ;
+		//return getSource().isPlace();
+	
 
 	public abstract boolean isReset();
 	

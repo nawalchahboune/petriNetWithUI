@@ -38,6 +38,7 @@ public class PlaceAdapter extends AbstractPlace {
 	@Override
 	public void removeToken() {
 		try {
+			System.out.println(this.place.getJetons() + " is decremented");
 			this.place.setJetons(this.place.getJetons()-1);
 		} catch (NegativeToken e) {
 			// TODO Auto-generated catch block
@@ -54,7 +55,13 @@ public class PlaceAdapter extends AbstractPlace {
 
 	@Override
 	public void setTokens(int tokens) {
-		
+		try {
+			this.place.setJetons(tokens);
+			System.out.println(tokens);
+		} catch (NegativeToken e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

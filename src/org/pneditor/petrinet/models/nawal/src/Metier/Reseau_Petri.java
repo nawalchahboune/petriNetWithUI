@@ -192,9 +192,13 @@ public class Reseau_Petri implements IReseauPetri {
 
 			ArrayList<ArcSortant> arcsEntrant= transition.getArcsEntrants();//entrant de la place
 			transition.setTirable(true);
+			System.out.println("les arcs entrants :");
+			System.out.println(arcsEntrant);
 			for (ArcSortant arcEntrant : arcsEntrant) {
+				
 				//en  vérifie si l'arc est fireable; si il ne l'est pas transition est non plus tirable
 				if(!arcEntrant.arcIsFireable()) {
+					System.out.println("heeey pay attention !!");
 					transition.setTirable(false);
 					break;
 				}
@@ -202,6 +206,8 @@ public class Reseau_Petri implements IReseauPetri {
 			//si la transition est tirable; on appelle les methodes de mise à jour des jetons
 			if(transition.isTirable()) {
 				ArrayList<ArcEntrant> arcsSortant= transition.getArcsSortants();
+				System.out.println("les arcs sortants :");
+				System.out.println(arcsSortant);
 				for(ArcEntrant arcSort : arcsSortant) {
 						arcSort.update_jetons_place();
 					
