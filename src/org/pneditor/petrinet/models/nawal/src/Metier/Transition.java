@@ -61,6 +61,50 @@ public class Transition {
 		return tirable;
 	}
 	
+	
+	public void fire() {
+
+			ArrayList<ArcSortant> arcsEntrant= this.getArcsEntrants();//entrant de la place
+			this.setTirable(true);
+		//	System.out.println("les arcs entrants :");
+			//System.out.println(arcsEntrant);
+			for (ArcSortant arcEntrant : arcsEntrant) {
+				
+				//en  vérifie si l'arc est fireable; si il ne l'est pas transition est non plus tirable
+				if(!arcEntrant.arcIsFireable()) {
+					//System.out.println("heeey pay attention !!");
+					this.setTirable(false);
+					break;
+				}
+			}
+			//si la transition est tirable; on appelle les methodes de mise à jour des jetons
+			if(this.isTirable()) {
+				ArrayList<ArcEntrant> arcsSortant= this.getArcsSortants();
+				//System.out.println("les arcs sortants :");
+				//System.out.println(arcsSortant);
+				for(ArcEntrant arcSort : arcsSortant) {
+						try {
+							arcSort.update_jetons_place();
+						} catch (NegativeToken e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+				}
+				for (ArcSortant arcEnt : arcsEntrant) {
+						try {
+							arcEnt.update_jeton_place();
+						} catch (NegativeToken e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+				}
+				//System.out.println("la transition "+transition.toString()+ "est tirée !!");
+			}
+		
+	}
+	
     /**
      * Obtient la liste des arcs sortants de la transition.
      * 
@@ -106,7 +150,7 @@ public class Transition {
      */
 	public void add_to_arc_entrant(ArcSortant arc) throws ExistingArc {
 		if(this.arcsEntrants.contains(arc)) {
-			throw new ExistingArc();
+			//throw new ExistingArc();
 		}
 		else {
 			this.arcsEntrants.add(arc);

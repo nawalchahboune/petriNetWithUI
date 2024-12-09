@@ -17,6 +17,7 @@ import org.pneditor.petrinet.models.nawal.src.Exceptions.ExistingTransition;
 import org.pneditor.petrinet.models.nawal.src.Exceptions.NegativeToken;
 import org.pneditor.petrinet.models.nawal.src.Exceptions.NegativeWeight;
 import org.pneditor.petrinet.models.nawal.src.Exceptions.NullPlaceException;
+import org.pneditor.petrinet.models.nawal.src.Exceptions.NullTArcException;
 import org.pneditor.petrinet.models.nawal.src.Exceptions.NullTransitionException;
 import org.pneditor.petrinet.models.nawal.src.Metier.Arc;
 import org.pneditor.petrinet.models.nawal.src.Metier.ArcEntrant;
@@ -25,18 +26,18 @@ import org.pneditor.petrinet.models.nawal.src.Metier.ArcSortantNormal;
 import org.pneditor.petrinet.models.nawal.src.Metier.ArcVideur;
 import org.pneditor.petrinet.models.nawal.src.Metier.ArcZero;
 import org.pneditor.petrinet.models.nawal.src.Metier.Place;
-import org.pneditor.petrinet.models.nawal.src.Metier.Reseau_Petri;
+import org.pneditor.petrinet.models.nawal.src.Metier.ReseauPetri;
 import org.pneditor.petrinet.models.nawal.src.Metier.Transition;
 
 public class PetriNetAdapter extends PetriNetInterface {
-	private Reseau_Petri network = new Reseau_Petri();
+	private ReseauPetri network = new ReseauPetri();
 	
 	
 
 	@Override
 	public AbstractPlace addPlace() {
 
-		System.out.println("debut simulation");
+		//System.out.println("debut simulation");
 		Place place= new Place();
 		PlaceAdapter placeAdapter= new PlaceAdapter(place);
 		try {
@@ -56,6 +57,7 @@ public class PetriNetAdapter extends PetriNetInterface {
 
 		Transition transition = new Transition();
 		TransitionAdapter transitionAdapter = new TransitionAdapter(transition);
+		
 		try {
 			network.ajouter_Tarnsition(transition);
 		} catch (NullTransitionException e) {
@@ -70,7 +72,7 @@ public class PetriNetAdapter extends PetriNetInterface {
 
 	@Override
 	public AbstractArc addRegularArc(AbstractNode source, AbstractNode destination) throws UnimplementedCaseException {
-		System.out.println("initializing an arc");
+		//System.out.println("initializing an arc");
 		ArcEAdapter arcEAdapter;
 		ArcSAdapter arcsAdapter;
 		AbstractArc aA=null;
@@ -80,6 +82,12 @@ public class PetriNetAdapter extends PetriNetInterface {
 				 arc= new ArcSortantNormal(1, ((PlaceAdapter)source).getPlace(), ((TransitionAdapter)destination).getTransition());
 				 arcsAdapter = new ArcSAdapter(arc);
 				 aA=arcsAdapter;
+				 try {
+					this.network.ajouter_Arc(arc);
+				} catch (NullTArcException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} catch (NullPlaceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -97,8 +105,15 @@ public class PetriNetAdapter extends PetriNetInterface {
 		if(source instanceof AbstractTransition) {
 			try {
 				 arc= new ArcEntrant(1, ((PlaceAdapter)destination).getPlace(), ((TransitionAdapter)source).getTransition());
+				
 				 arcEAdapter = new ArcEAdapter(arc);
 				 aA=arcEAdapter;
+				 try {
+					this.network.ajouter_Arc(arc);
+				} catch (NullTArcException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} catch (NullPlaceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -114,7 +129,7 @@ public class PetriNetAdapter extends PetriNetInterface {
 			}
 			
 		}
-		System.out.println("adding arc");
+		//System.out.println("adding arc");
 		
 		
 		return aA ;
@@ -127,6 +142,12 @@ public class PetriNetAdapter extends PetriNetInterface {
 	Arc arc= null;
 			 try {
 				arc= new ArcZero( ((PlaceAdapter)place).getPlace(), ((TransitionAdapter)transition).getTransition());
+				try {
+					this.network.ajouter_Arc(arc);
+				} catch (NullTArcException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} catch (NullPlaceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -150,7 +171,13 @@ public class PetriNetAdapter extends PetriNetInterface {
 	Arc arc= null;
 			 try {
 				arc= new ArcVideur( ((PlaceAdapter)place).getPlace(), ((TransitionAdapter)transition).getTransition());
-			} catch (NullPlaceException e) {
+				try {
+					this.network.ajouter_Arc(arc);
+				} catch (NullTArcException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 } catch (NullPlaceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullTransitionException e) {
@@ -169,33 +196,34 @@ public class PetriNetAdapter extends PetriNetInterface {
 
 	@Override
 	public void removePlace(AbstractPlace place) {
-		System.out.println("removing place");
+		//System.out.println("removing place");
 		network.supprimer_Place(((PlaceAdapter)place).getPlace());
-		
-	}
+		}
 
 	@Override
 	public void removeTransition(AbstractTransition transition) {
-		System.out.println("removing transition");
+		//System.out.println("removing transition");
 		network.supprimer_Tarnsition(((TransitionAdapter)transition).getTransition());
-		Transition t = ((TransitionAdapter)transition).getTransition();
-		for (Arc arc : t.getArcsEntrants()) {
-			t.remove_from_arc_entrant((ArcSortant)arc);
-		}
-		for (Arc arc : t.getArcsSortants()) {
-			t.remove_from_arc_Sortant((ArcEntrant)arc);
-		}
+		
 		
 	}
 
 	@Override
 	public void removeArc(AbstractArc arc) {
 		
+		
 		if(arc.getSource() instanceof AbstractPlace) {
 			network.supprimer_Arc(((ArcSAdapter)arc).getArc());
+			//System.out.println(network.getArcs().size());
+			//System.out.println("removing : "+ "regular ? " + ((ArcSAdapter)arc).isRegular() + " / reset ? "+ ((ArcSAdapter)arc).isReset()+ " / inhibitor ? "+ ((ArcSAdapter)arc).isInhibitory());
+			//System.out.println(network.getArcs().size());
 		}
 		if(arc.getSource() instanceof AbstractTransition){
+			//System.out.println(network.getArcs().size());
 			network.supprimer_Arc(((ArcEAdapter)arc).getArc());
+			//System.out.println("removing : "+ (ArcEAdapter)arc);
+			//System.out.println(network.getArcs().size());
+
 		}
 		
 		
@@ -208,33 +236,32 @@ public class PetriNetAdapter extends PetriNetInterface {
 
 	@Override
 	public void fire(AbstractTransition transition) throws ResetArcMultiplicityException {
-System.out.println("firing !! ");
 try
       {
-	System.out.println(this.network.getPlaces());
+	//System.out.println(this.network.getPlaces());
 	Transition t = (((TransitionAdapter)transition).getTransition());
 	ArrayList<ArcEntrant > arcsS= t.getArcsSortants();
 	ArrayList<ArcSortant > arcsE= t.getArcsEntrants();
-	System.out.println("pour les arcs entrants à la transition ");
+	//System.out.println("pour les arcs entrants à la transition ");
 	for (ArcSortant arcEntrant : arcsE) {
-		System.out.println(arcEntrant.getPlace().getJetons());
+		//System.out.println(arcEntrant.getPlace().getJetons());
 	}
-	System.out.println("pour les arcs sortants de la transition ");
+	//System.out.println("pour les arcs sortants de la transition ");
 	for (ArcEntrant arcSortant : arcsS) {
-		System.out.println(arcSortant.getPlace().getJetons());
+		//System.out.println(arcSortant.getPlace().getJetons());
 	}
 	
 	this.network.fire(((TransitionAdapter)transition).getTransition());
 	for (ArcSortant arcEntrant : arcsE) {
-		System.out.println(arcEntrant.getPlace().getJetons());
+		//System.out.println(arcEntrant.getPlace().getJetons());
 	}
 	arcsS= t.getArcsSortants();
 	arcsE= t.getArcsEntrants();
-	System.out.println("pour les arcs sortants de la transition ");
+	//System.out.println("pour les arcs sortants de la transition ");
 	for (ArcEntrant arcSortant : arcsS) {
-		System.out.println(arcSortant.getPlace().getJetons());
+		//System.out.println(arcSortant.getPlace().getJetons());
 	}
-			System.out.println(this.network.getPlaces());
+			//System.out.println(this.network.getPlaces());
 		} catch (NullTransitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

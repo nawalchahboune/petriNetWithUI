@@ -1,6 +1,8 @@
 package org.pneditor.petrinet.adapters.nawal;
 
 import org.pneditor.petrinet.AbstractTransition;
+import org.pneditor.petrinet.models.nawal.src.Metier.Arc;
+import org.pneditor.petrinet.models.nawal.src.Metier.ArcSortant;
 import org.pneditor.petrinet.models.nawal.src.Metier.Transition;
 
 public class TransitionAdapter extends AbstractTransition {
@@ -27,6 +29,13 @@ public class TransitionAdapter extends AbstractTransition {
 		return transition;
 	}
 	public boolean isTirable() {
+		//System.out.println("à un moment donnée j'aurai besoin de la tirabilité de la transition ! : "+ this.transition.isTirable());
+		for (ArcSortant arc : this.getTransition().getArcsEntrants()){
+			
+		//System.out.println("la tirabilité des arcs entrants :"+arc.arcIsFireable());
+			
+		}
+		
 		return this.transition.isTirable();
 	}
 	

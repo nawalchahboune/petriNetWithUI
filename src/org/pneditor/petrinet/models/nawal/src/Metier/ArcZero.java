@@ -27,7 +27,7 @@ public class ArcZero extends ArcSortant {
 		// TODO Auto-generated constructor stub
 		super(place, transition);
 		// Initialisation de l'état de l'arc à inactif (pas tirable)
-		this.active =false;
+		this.active =(this.getPlace().getJetons() == 0);
 		// Ajout de l'arc aux listes des arcs associés à la transition et à la place
 		transition.add_to_arc_entrant(this);
 		place.add_to_arc_sortant(this);

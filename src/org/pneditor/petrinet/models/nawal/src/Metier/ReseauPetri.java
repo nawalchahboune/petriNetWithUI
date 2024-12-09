@@ -12,7 +12,7 @@ import org.pneditor.petrinet.models.nawal.src.Exceptions.*;
  * Permet l'activation du réseau de Petri créé.
  */
 
-public class Reseau_Petri implements IReseauPetri {
+public class ReseauPetri implements IReseauPetri {
 	private ArrayList<Arc> arcs;
 	private ArrayList<Place> places;
 	private ArrayList<Transition> transitions;
@@ -21,7 +21,7 @@ public class Reseau_Petri implements IReseauPetri {
      * Constructeur par défaut. Initialise un réseau de Petri vide.
      */
 	
-	public Reseau_Petri() {
+	public ReseauPetri() {
 		this.arcs = new ArrayList<Arc>();
 		this.places = new ArrayList<Place>();
 		this.transitions = new ArrayList<Transition>();
@@ -172,6 +172,7 @@ public class Reseau_Petri implements IReseauPetri {
 	public void supprimer_Tarnsition(Transition transition) {
 		if(this.transitions.contains(transition)) {
 			this.transitions.remove(this.transitions.indexOf(transition));
+			
 		}
 		
 	}
@@ -188,39 +189,7 @@ public class Reseau_Petri implements IReseauPetri {
     public void fire(Transition transition) throws NullTransitionException, NegativeToken  {
 		//type ArcSortant réfère à un arc sortant de la place associé; 
 		//donc un arc entrant de la transition et vis vers ca
-		if(transition!=null) {
-
-			ArrayList<ArcSortant> arcsEntrant= transition.getArcsEntrants();//entrant de la place
-			transition.setTirable(true);
-			System.out.println("les arcs entrants :");
-			System.out.println(arcsEntrant);
-			for (ArcSortant arcEntrant : arcsEntrant) {
-				
-				//en  vérifie si l'arc est fireable; si il ne l'est pas transition est non plus tirable
-				if(!arcEntrant.arcIsFireable()) {
-					System.out.println("heeey pay attention !!");
-					transition.setTirable(false);
-					break;
-				}
-			}
-			//si la transition est tirable; on appelle les methodes de mise à jour des jetons
-			if(transition.isTirable()) {
-				ArrayList<ArcEntrant> arcsSortant= transition.getArcsSortants();
-				System.out.println("les arcs sortants :");
-				System.out.println(arcsSortant);
-				for(ArcEntrant arcSort : arcsSortant) {
-						arcSort.update_jetons_place();
-					
-				}
-				for (ArcSortant arcEnt : arcsEntrant) {
-						arcEnt.update_jeton_place();
-					
-				}
-				System.out.println("la transition "+transition.toString()+ "est tirée !!");
-			}
-		}else {
-			throw new NullTransitionException();
-		}
+		transition.fire();
 		
 	}
 	/**
@@ -283,8 +252,8 @@ public class Reseau_Petri implements IReseauPetri {
 	public String toString() {
 		String s="";
 		for (Transition transition : transitions) {
-			System.out.println(transitions.size());
-			System.out.println(transition.toString() );
+			//System.out.println(transitions.size());
+			//System.out.println(transition.toString() );
 			s+=transition.toString() +"\n";
 			ArrayList<ArcSortant> arcE= transition.getArcsEntrants();
 			ArrayList<ArcEntrant> arcS= transition.getArcsSortants();

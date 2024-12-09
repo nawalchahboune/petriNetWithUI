@@ -81,7 +81,7 @@ public class ArcSortantNormal extends ArcSortant {
 		  // Vérification que la place possède suffisamment de jetons pour effectuer la mise à jour
 		if(jetons-this.poids>=0) {
 			this.getPlace().setJetons(jetons - this.poids);
-			System.out.println("changing tokens in entry place, it is : "+ this.getPlace().getJetons());
+			//System.out.println("changing tokens in entry place, it is : "+ this.getPlace().getJetons());
 		}else {
 			throw new NegativeToken();
 		}

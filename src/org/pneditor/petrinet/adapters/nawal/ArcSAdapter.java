@@ -35,10 +35,10 @@ public class ArcSAdapter extends AbstractArc {
 	public boolean isReset() {
 		if(arc instanceof ArcVideur) {
 
-			System.out.println("reset : true");
+			//System.out.println("reset : true");
 			return true;
 		}
-		System.out.println("reset : false");
+		//System.out.println("reset : false");
 		return false ;
 	}
 
@@ -46,10 +46,10 @@ public class ArcSAdapter extends AbstractArc {
 	public boolean isRegular() {
 		
 		if(arc instanceof ArcSortantNormal) {
-			System.out.println("regular : true");
+			//System.out.println("regular : true");
 			return true; 
 		}
-		System.out.println("regular : false");
+		//System.out.println("regular : false");
 		return false;
 	}
 
@@ -57,11 +57,11 @@ public class ArcSAdapter extends AbstractArc {
 	public boolean isInhibitory() {
 		if(arc instanceof ArcZero) {
 
-			System.out.println("inhibitory : true ");
+			//System.out.println("inhibitory : true ");
 			return true;
 		}
 
-		System.out.println("inhibitory :false ");
+		//System.out.println("inhibitory :false ");
 		return false;
 	}
 
